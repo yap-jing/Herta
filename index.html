@@ -30,23 +30,18 @@
   transform: translate(-50%, -50%);
   object-fit: cover;
 }
-#bg-video-iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 56.25vw;
-  min-height: 100vh;
-  min-width: 177.77vh;
-  transform: translate(-50%, -50%) scale(1.5); /* scale up to crop out YouTube's UI edges */
-  pointer-events: none !important;
-}
 
 /* Make sure your text stays readable on top of the video */
 tw-story, tw-passage {
   position: relative;
   z-index: 1;
   background: transparent !important;
+}
+
+tw-passage {
+  background: rgba(0, 0, 0, 0.6) !important; /* semi-transparent dark overlay so text is readable */
+  padding: 20px;
+  border-radius: 8px;
 }
 
 #video-load-overlay {
@@ -60,31 +55,37 @@ tw-story, tw-passage {
   transition: opacity 0.8s ease;
   pointer-events: none;
 }
-tw-passage {
-  background: rgba(0, 0, 0, 0.6) !important; /* semi-transparent dark overlay so text is readable */
-  padding: 20px;
-  border-radius: 8px;
+
+#start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 9999;
+  cursor: pointer;
+  transition: opacity 0.8s ease;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">function runTypewriter() {
   const passage = document.querySelector('tw-passage');
   if (!passage || !passage.textContent.trim()) return false;
-
   const fullText = passage.innerHTML;
   passage.innerHTML = '';
   passage.style.whiteSpace = 'pre-wrap';
-
   let i = 0;
   const speed = 10;
   let cursorSpan = null;
-
   function typeChar() {
-    // Remove the previous cursor if it exists
     if (cursorSpan) {
       cursorSpan.remove();
       cursorSpan = null;
     }
-
     if (i < fullText.length) {
-      // If we hit an HTML tag, just insert it directly, no cursor needed
       if (fullText[i] === '<') {
         const tagEnd = fullText.indexOf('>', i);
         passage.innerHTML += fullText.substring(i, tagEnd + 1);
@@ -92,29 +93,22 @@ tw-passage {
         setTimeout(typeChar, speed);
         return;
       }
-
-      // Show green cursor "_" first
       cursorSpan = document.createElement('span');
       cursorSpan.textContent = '_';
       cursorSpan.style.color = '#00ff00';
       passage.appendChild(cursorSpan);
-
       setTimeout(function() {
-        // Replace cursor with the actual character, in white
         cursorSpan.remove();
         cursorSpan = null;
-
         const charSpan = document.createElement('span');
         charSpan.textContent = fullText[i];
         charSpan.style.color = '#ffffff';
         passage.appendChild(charSpan);
-
         i++;
         setTimeout(typeChar, speed);
       }, speed);
     }
   }
-
   typeChar();
   return true;
 }
@@ -125,18 +119,9 @@ const checkInterval = setInterval(function() {
   }
 }, 100);
 
-
 const bgMusic = new Audio('https://github.com/yap-jing/Herta/raw/refs/heads/main/Herta%20Space%20Station%20OST%20Extended%20%20Honkai_%20Star%20Rail.mp3');
 bgMusic.loop = true;
 bgMusic.volume = 0.5;
-
-bgMusic.play().catch(function(error) {
-  console.log('Autoplay blocked, waiting for user interaction');
-  document.addEventListener('click', function startMusic() {
-    bgMusic.play();
-    document.removeEventListener('click', startMusic);
-  });
-});
 
 // Create full-screen background video
 const videoContainer = document.createElement('div');
@@ -157,7 +142,21 @@ setTimeout(function() {
   setTimeout(function() {
     loadOverlay.remove();
   }, 800);
-}, 5000);</script><tw-passagedata pid="1" name="Untitled Passage" tags="" position="750,325" size="100,100">Disciple of Chaos \\
+}, 5000);
+
+// Click-to-begin screen — triggers music start
+const startScreen = document.createElement('div');
+startScreen.id = 'start-screen';
+startScreen.innerHTML = '<p>Click anywhere to begin</p>';
+document.body.appendChild(startScreen);
+
+startScreen.addEventListener('click', function() {
+  bgMusic.play();
+  startScreen.style.opacity = '0';
+  setTimeout(function() {
+    startScreen.remove();
+  }, 800);
+});</script><tw-passagedata pid="1" name="Untitled Passage" tags="" position="750,325" size="100,100">Disciple of Chaos \\
 
 First discovery at: ∑ . DXE7G2 . 0.517
 
