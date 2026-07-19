@@ -132,13 +132,9 @@ bgMusic.play().catch(function(error) {
 const videoContainer = document.createElement('div');
 videoContainer.id = 'bg-video-container';
 videoContainer.innerHTML = `
-  <iframe 
-    id="bg-video-iframe"
-    src="https://www.youtube.com/embed/4gmrHQa7fEg?autoplay=1&mute=1&loop=1&playlist=4gmrHQa7fEg&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="https://github.com/yap-jing/Herta/raw/refs/heads/main/Space.mp4" type="video/mp4">
+  </video>
 `;
 document.body.appendChild(videoContainer);
 
