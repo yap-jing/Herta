@@ -62,15 +62,42 @@ tw-passage {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000000;
-  color: #ffffff;
+  background: #16324f;
+  color: #e8a961;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-family: Arial, sans-serif;
   z-index: 9999;
   cursor: pointer;
   transition: opacity 0.8s ease;
+  text-align: center;
+}
+
+#start-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+#start-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 16px;
+}
+
+#start-logs {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+#start-cta {
+  font-size: 18px;
+  font-weight: normal;
+  opacity: 0.8;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">function runTypewriter() {
   const passage = document.querySelector('tw-passage');
   if (!passage || !passage.textContent.trim()) return false;
@@ -147,7 +174,12 @@ setTimeout(function() {
 // Click-to-begin screen — triggers music start
 const startScreen = document.createElement('div');
 startScreen.id = 'start-screen';
-startScreen.innerHTML = '<p>Click anywhere to begin</p>';
+startScreen.innerHTML = `
+  <div id="start-title">Teutonic Order | The Horizon Watch | Frontline Rangers</div>
+  <div id="start-subtitle">Collaboration</div>
+  <div id="start-logs">Logs #07-001</div>
+  <div id="start-cta">Click to begin</div>
+`;
 document.body.appendChild(startScreen);
 
 startScreen.addEventListener('click', function() {
@@ -160,7 +192,7 @@ startScreen.addEventListener('click', function() {
 
 First discovery at: ∑ . DXE7G2 . 0.517
 
-Classification: Class-V Hazard. Shapeshifter. Group.
+Classification: &lt;span style=&quot;color: #ff3333;&quot;&gt;Class-V Hazard&lt;/span&gt;. Shapeshifter. Group.
 
 Observation by — General Researcher, Ray Hattan (Inter-Space Pharmaceutical Corporation)
 
